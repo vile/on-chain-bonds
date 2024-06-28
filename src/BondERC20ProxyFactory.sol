@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.25;
 
+import {BondERC20} from "./BondERC20.sol";
 import {BondERC20BeaconProxy} from "./proxy/BondERC20BeaconProxy.sol";
 import {BondERC20ProxyFactoryEvents} from "./libraries/BondERC20ProxyFactoryEvents.sol";
 import {BondERC20ProxyFactoryErrors} from "./libraries/BondERC20ProxyFactoryErrors.sol";
@@ -11,9 +12,6 @@ import {BondERC20ProxyFactoryErrors} from "./libraries/BondERC20ProxyFactoryErro
 /// @notice Using a (non-upgradeable) beacon proxy pattern saves significant gas, as each instance only deploys a minimal beacon proxy
 /// @notice and calls out to a single beacon to find an implementation, instead of having to deploy the same code across every instance.
 contract BondERC20ProxyFactory {
-    /// @dev Function selector for `initialize(address,address,address,uint256,bool,string,string,string)`
-    bytes4 private constant INIT_FUNC_SELECTOR = hex"23f59ce4";
-
     /// @notice Non-upgradeable beacon for BondERC20 implementation.
     address private immutable i_BondERC20Beacon;
 
@@ -50,15 +48,17 @@ contract BondERC20ProxyFactory {
             new BondERC20BeaconProxy(
                 i_BondERC20Beacon,
                 abi.encodeCall(
-                    INIT_FUNC_SELECTOR,
-                    msg.sender,
-                    beneficiary,
-                    bondToken,
-                    bondPrice,
-                    shouldBurnBonds,
-                    erc721Name,
-                    erc721Symbol,
-                    erc721URI
+                    BondERC20.initialize,
+                    (
+                        msg.sender,
+                        beneficiary,
+                        bondToken,
+                        bondPrice,
+                        shouldBurnBonds,
+                        erc721Name,
+                        erc721Symbol,
+                        erc721URI
+                    )
                 )
             )
         );
