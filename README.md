@@ -138,3 +138,5 @@ Refer to repo usage steps.
 1. Bond instances are to not be used with [any weird ERC20s](https://github.com/d-xo/weird-erc20) (e.g., stETH (rebasing) or PAXG (fee-on-transfer)).
 2. Ether can become locked forever in certain contracts if `value` is included with specific function calls.
 3. Individual Bond instances (beacon proxies) are owned, users of each bond instance need to trust the owner.
+4. NFTs are transferrable; the original bond purchaser (minter) and the recipient of an accepted bond's tokens may differ.
+5. When creating proxies, NFT metadata (name, symbol, URI) is not validated or checked that it follows any convention.
