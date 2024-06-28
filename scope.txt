@@ -1,0 +1,12 @@
+src/BondERC20.sol
+src/BondERC20ProxyFactory.sol
+src/abstracts/BaseBeaconProxy.sol
+src/abstracts/Bond.sol
+src/interfaces/IBond.sol
+src/interfaces/IBondERC20.sol
+src/libraries/BondERC20ProxyFactoryErrors.sol
+src/libraries/BondERC20ProxyFactoryEvents.sol
+src/libraries/BondErrors.sol
+src/libraries/BondEvents.sol
+src/proxy/BondERC20BeaconProxy.sol
+src/proxy/NonUpgradeableBondERC20Beacon.sol
