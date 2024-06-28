@@ -14,7 +14,7 @@ contract SimpleDeployTest is TestBase {
             false,
             "Mock ERC20 100 Bond",
             "MOCK-100-BOND",
-            "ipfs:://real-uri/thumbnail.png"
+            "ipfs://real-uri/thumbnail.png"
         );
     }
 
@@ -31,7 +31,7 @@ contract SimpleDeployTest is TestBase {
             false,
             "Mock ERC20 100 Bond",
             "MOCK-100-BOND",
-            "ipfs:://real-uri/thumbnail.png"
+            "ipfs://real-uri/thumbnail.png"
         );
         vm.stopPrank();
     }
