@@ -3,4 +3,29 @@ src = "src"
 out = "out"
 libs = ["lib"]
 
+solc_version = "0.8.25"
+# evm_version = "Cancun"
+ignored_error_codes = [
+    2018, # view functions can be marked as pure
+    2394, # tstore beaks composability
+    3860, # contract size limit exceeded (for tests)
+    5574, # contract size limit exceeded (for tests)
+]
+
+remappings = ["@solady/=lib/solady/src/"]
+
+optimizer = true
+optimizer_runs = 10_000_000
+ffi = false
+
+[profile.lite]
+optimizer = false
+optimizer-runs = 0
+ffi = false
+
+ignored_warnings_from = ["./tests/mocks/MockERC20.sol"]
+
+[fuzz]
+runs = 1_000
+
 # See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options
