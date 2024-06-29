@@ -10,7 +10,8 @@ update :; forge update
 
 install :; foundryup && forge install foundry-rs/forge-std --no-commit && forge install vectorized/solady --no-commit && forge install OpenZeppelin/openzeppelin-contracts --no-commit
 
-build :; forge build
+build :; FOUNDRY_PROFILE=default forge build
+build-lite :; FOUNDRY_PROFILE=lite forge build
 
 ### Clean
 
@@ -28,7 +29,7 @@ clean-aderyn :; -rm -rf aderyn-report.md
 
 ### Testing & Coverage
 
-test :; forge test
+test :; FOUNDRY_PROFILE=lite forge test
 test-ext: test coverage-lcov slither aderyn
 test-ext2: test coverage-lcov slitherin aderyn
 
@@ -50,4 +51,8 @@ scope :; tree ./src/ | sed 's/└/#/g; s/──/--/g; s/├/#/g; s/│ /|/g; s/�
 
 ### Deploy
 
-# TODO
+# Uses default private key #1 on Anvil
+deploy-anvil :; forge script script/DeployScript.s.sol:DeployScript --private-key=0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80 --fork-url http://localhost:8545 --broadcast
+
+# Live deployment on Sepolia
+deploy-sepolia :; forge script --chain sepolia script/DeployScript.s.sol:DeployScript --account $(KEYSTORE) --rpc-url $(SEPOLIA_RPC_URL) --broadcast --verify -vvvv

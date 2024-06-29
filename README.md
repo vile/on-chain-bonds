@@ -88,7 +88,59 @@ forge test --mt test_testName -vvvvv
 
 ### Deploying
 
-TODO
+#### Test Net Funding
+
+Deployments on testnets can get a little pricey (ETH-wise), and sometimes faucets don't cut it.
+If that is the case, [LayerZero's TestNet Bridge](https://testnetbridge.com/) allows you to bridge a small amount (usually less than $2) from a handful of L2s to Ethereum L1 Sepolia.
+On average, briding 0.0001 ETH from ARB or OP to ETH L1 Sepolia, gives ~3.5 sepETH.
+
+#### Deployer Wallet, RPCs, API Key(s)
+
+This project uses [Foundry's keystore](https://book.getfoundry.sh/reference/cast/cast-wallet) feature to manage deployer wallet(s).
+As such, either import your existing deployer private key using `cast wallet import`.
+Or, generate a new keystore (and associated private key) using:
+
+```bash
+cast wallet new ~/.foundry/keystores # this is the default foundry keystore folder on linux 
+# Enter secret: [your keystore password here]
+cast wallet list # check your new keystore (usually will be a random alphanumeric string)
+mv ~/.foundry/keystores/name-of-keystore-you-generated ~/.foundry/keystores/new_key_name # rename your local keystore file
+cast wallet list # ensure it was renamed
+```
+
+You need to prepare your `.env` file before you can add your RPC and Etherscan API key.
+To do so, simply rename the current `.env.example` using `mv .env.example .env`.
+**NEVER SHARE THIS FILE OR ITS CONTENTS, INCLUDING UPLOADING IT TO A GIT REPO**.
+
+An easy RPC solution is [Alchemy](https://www.alchemy.com/).
+Either create an account with Alchemy, or sign-in using your GitHub account.
+Then, create a new app on the Alchemy dashboard, and copy your target deployment chain's HTTP RPC URL (for this example, Sepolia).
+Now, put the copied RPC URL after the `=` in `.env` under `SEPOLIA_RPC_URL`.
+
+Now, to get an Etherscan API key (used to verify the contracts on the block explorer), [create an Etherscan account](https://etherscan.io/register), or if you already have one, use that.
+Then, [create a new API key](https://etherscan.io/myapikey) in your account settings.
+Copy that API key, and put it after the `=` in `.env` under `ETHERSCAN_API_KEY`.
+Etherscan API keys work across **all Ethereum network** explorers (Mainnet, Sepolia, Holesky, etc.).
+
+#### Running Deploy Script
+
+To run a test (anvil) deployment, use:
+
+```bash
+# start Anvil (in a seperate terminal)
+anvil
+
+# run the deploy script, targeting the local Anvil chain
+make deploy-anvil
+```
+
+To run a live, testnet deployment, use:
+
+```bash
+make deploy-sepolia KEYSTORE=DEPLOYER_KEYSTORE # change `DEPLOYER_KEYSTORE` to your actual keystore name
+```
+
+Running the live deployment command will deploy all the required contracts, and verify them on Etherscan.
 
 ### Static Analyzers
 
