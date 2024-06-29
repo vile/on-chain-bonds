@@ -21,7 +21,7 @@ contract NonUpgradeableBondERC20BeaconTest is TestBase {
 
     /// @notice Except `upgradeTo` calls to fail (function does not exist).
     /// @notice Assert that the `upgradeTo` function does not exist
-    function test_beaconCannotBeUpgrade() public {
+    function test_RevertBeaconCannotBeUpgrade() public {
         address implBefore = beacon.implementation();
         (bool succ,) = address(beacon).call(abi.encodeWithSelector(UPGRADE_TO_SIG, address(0xDEAD)));
         address implAfter = beacon.implementation();

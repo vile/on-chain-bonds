@@ -54,6 +54,7 @@ contract BondERC20Test is TestBase {
         vm.stopPrank();
     }
 
+    /// @notice Prank the entire test as `USER_ONE` (bond instance owner).
     modifier prankBondInstanceOwner() {
         vm.startPrank(USER_ONE);
         _;
@@ -77,7 +78,7 @@ contract BondERC20Test is TestBase {
 
     /// @notice Except revert when apporval is insufficient.
     /// @notice Assert Bond NFT balance is still zero.
-    function test_buyBondFailsWithoutApproval() public createProxy(false) prankUserTwo {
+    function test_RevertBuyBondFailsWithoutApproval() public createProxy(false) prankUserTwo {
         mockToken.mint(BOND_PRICE);
         vm.expectRevert(ERC20.InsufficientAllowance.selector);
         latestProxy.buyBond();
@@ -88,7 +89,7 @@ contract BondERC20Test is TestBase {
 
     /// @notice Except revert when token balance is insufficient.
     /// @notice Assert Bond NFT balance is still zero.
-    function test_buyBondFailsWithoutTokens() public createProxy(false) prankUserTwo {
+    function test_RevertBuyBondFailsWithoutTokens() public createProxy(false) prankUserTwo {
         mockToken.approve(address(latestProxy), type(uint256).max);
         vm.expectRevert(ERC20.InsufficientBalance.selector);
         latestProxy.buyBond();
@@ -110,7 +111,7 @@ contract BondERC20Test is TestBase {
 
     /// @notice Except revert when apporval is insufficient.
     /// @notice Assert Bond NFT balance is still zero.
-    function test_buyBondForFailsWithoutApproval() public createProxy(false) prankUserTwo {
+    function test_RevertBuyBondForFailsWithoutApproval() public createProxy(false) prankUserTwo {
         mockToken.mint(BOND_PRICE);
         vm.expectRevert(ERC20.InsufficientAllowance.selector);
         latestProxy.buyBondFor(address(USER_THREE));
@@ -121,7 +122,7 @@ contract BondERC20Test is TestBase {
 
     /// @notice Except revert when token balance is insufficient.
     /// @notice Assert Bond NFT balance is still zero.
-    function test_buyBondForFailsWithoutTokens() public createProxy(false) prankUserTwo {
+    function test_RevertBuyBondForFailsWithoutTokens() public createProxy(false) prankUserTwo {
         mockToken.approve(address(latestProxy), type(uint256).max);
         vm.expectRevert(ERC20.InsufficientBalance.selector);
         latestProxy.buyBondFor(address(USER_THREE));
@@ -155,7 +156,7 @@ contract BondERC20Test is TestBase {
 
     /// @notice Expect the bond acceptance to fail due to the token id not existing.
     /// @notice Assert that USER_TWO NFT balance is still one, and token balances have not changed.
-    function test_acceptBondTokenDoesntExists()
+    function test_RevertAcceptBondTokenDoesntExists()
         public
         createProxy(false)
         userTwoMintBond(latestProxy, address(USER_TWO))
@@ -238,7 +239,7 @@ contract BondERC20Test is TestBase {
 
     /// @notice Expect bond rejection to fail due to the token id not existing.
     /// @notice Assert USER_TWO NFT balance is still one, underlying token balances have not changed.
-    function test_rejectBondTokenDoesntExist()
+    function test_RevertRejectBondTokenDoesntExist()
         public
         createProxy(false)
         userTwoMintBond(latestProxy, address(USER_TWO))
@@ -329,7 +330,7 @@ contract BondERC20Test is TestBase {
 
     /// @notice Expect beneficiary to update properly.
     /// @notice Assert beneficiary has been updated.
-    function test_changeBeneficiary(address newBeneficiary) public createProxy(false) prankBondInstanceOwner {
+    function testFuzz_changeBeneficiary(address newBeneficiary) public createProxy(false) prankBondInstanceOwner {
         vm.assume(newBeneficiary != address(0));
 
         vm.expectEmit();
