@@ -1,6 +1,6 @@
 -include .env
 
-.PHONY: all update install build clean clean-git clean-coverage-report clean-lcov clean-slither clean-aderyn test test-ext test-ext2 coverage coverage-lcov slither aderyn scopefile scope script-deploy-live script-deploy-dry sudo-act
+.PHONY: all update install build clean clean-git clean-coverage-report clean-lcov clean-slither clean-aderyn test test-ext test-ext2 coverage coverage-lcov slither aderyn scopefile scope script-deploy-live script-deploy-dry sudo-act deploy-anvil deploy-sepolia
 
 all: clean install build
 
