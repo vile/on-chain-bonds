@@ -39,11 +39,11 @@ The initial protocol deployment consists are three (3) parts:
 </details>
 
 Entities who are interested in using the protocol, can deploy a beacon proxy (using the proxy factory), which creates a new "instance" of an independently owned Bond.
-The initial owner is the proxy contract caller, but ownership can be transferred to, say, a multi-sig operated by a decentralized governance strucuture.
+The initial owner is the proxy contract caller, but ownership can be transferred to, say, a multi-sig operated by a decentralized governance structure.
 
 Beyond this extra step and external infrastructure, the owner of the Bond instance has the final say in "accepting" or "rejecting" bonds.
 And, therefore, without a decentralized instance owner, all users who mint bonds **must** trust the owner to act in good faith.
-Ownership is required for each Bond instance to function; there is no other way to properly handle accepting or rejecting bonds, as each instance can have arbitrary, socialized rulesets that may/must be evaludated by human judgement.
+Ownership is required for each Bond instance to function; there is no other way to properly handle accepting or rejecting bonds, as each instance can have arbitrary, socialized rulesets that may/must be evaluated  by human judgment.
 
 ## Getting Started
 
@@ -68,7 +68,7 @@ See the [Static Analyzers](#static-analyzers) for external tool installation.
 
 ### Testing
 
-Run all Founry tests, slither, and aderyn:
+Run all Foundry tests, slither, and aderyn:
 
 ```bash
 make test-ext
@@ -92,7 +92,7 @@ forge test --mt test_testName -vvvvv
 
 Deployments on testnets can get a little pricey (ETH-wise), and sometimes faucets don't cut it.
 If that is the case, [LayerZero's TestNet Bridge](https://testnetbridge.com/) allows you to bridge a small amount (usually less than $2) from a handful of L2s to Ethereum L1 Sepolia.
-On average, briding 0.0001 ETH from ARB or OP to ETH L1 Sepolia, gives ~3.5 sepETH.
+On average, bridging 0.0001 ETH from ARB or OP to ETH L1 Sepolia, gives ~3.5 sepETH.
 
 #### Deployer Wallet, RPCs, API Key(s)
 
@@ -127,7 +127,7 @@ Etherscan API keys work across **all Ethereum network** explorers (Mainnet, Sepo
 To run a test (anvil) deployment, use:
 
 ```bash
-# start Anvil (in a seperate terminal)
+# start Anvil (in a separate terminal)
 anvil
 
 # run the deploy script, targeting the local Anvil chain
