@@ -142,6 +142,15 @@ make deploy-sepolia KEYSTORE=DEPLOYER_KEYSTORE # change `DEPLOYER_KEYSTORE` to y
 
 Running the live deployment command will deploy all the required contracts, and verify them on Etherscan.
 
+### Live Deployments (Sepolia)
+
+| Contract                      | Address                                                                                                                       |
+| ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| BondERC20 (Implementation)    | [0x596235e3ac7fc8ec0108093722648c5ce7feca85](https://sepolia.etherscan.io/address/0x596235e3ac7fc8ec0108093722648c5ce7feca85) |
+| NonUpgradeableBondERC20Beacon | [0xc6d794daa00fe35487fef38b28439dce7c431346](https://sepolia.etherscan.io/address/0xc6d794daa00fe35487fef38b28439dce7c431346) |
+| BondERC20ProxyFactory         | [0x24e580ca133cce4040f682298de13d1d7fcbddcd](https://sepolia.etherscan.io/address/0x24e580ca133cce4040f682298de13d1d7fcbddcd) |
+| Example Bond Instance (Proxy) | [0x335e088f203cb1eB08c364218869F3e8172615Ea](https://sepolia.etherscan.io/address/0x335e088f203cb1eB08c364218869F3e8172615Ea) |
+
 ### Static Analyzers
 
 <details>
