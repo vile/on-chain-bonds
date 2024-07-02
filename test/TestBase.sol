@@ -13,7 +13,7 @@ import {IBondERC20} from "../src/interfaces/IBondERC20.sol";
 import {NonUpgradeableBondERC20Beacon} from "../src/proxy/NonUpgradeableBondERC20Beacon.sol";
 import {BondERC20ProxyFactory} from "../src/BondERC20ProxyFactory.sol";
 
-contract TestBase is Test {
+abstract contract TestBase is Test {
     address internal DEPLOYER = makeAddr("deployer"); // Protocol deployer
     address internal BENEFICIARY = makeAddr("beneficiary"); // Generic beneficiary for all tests
     address internal USER_ONE = makeAddr("userOne"); // Independent proxy/bond deployer (user)
