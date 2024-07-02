@@ -9,57 +9,10 @@ import {ERC20} from "@solady/tokens/ERC20.sol";
 import {ERC721} from "@solady/tokens/ERC721.sol";
 
 // Test
-import {TestBase} from "../TestBase.sol";
+import {TestBaseWModifiersForBondERC20} from "../TestBaseWModifiersForBondERC20.sol";
 
-contract BondERC20Test is TestBase {
-    uint256 internal constant BOND_PRICE = 100 ether;
-    string tokenName = "Mock ERC20 100 Token";
-    string tokenSymbol = "MOCK-100-BOND";
-    string tokenUri = "ipfs://real-uri/image.png";
-
+contract BondERC20Test is TestBaseWModifiersForBondERC20 {
     address internal USER_THREE = makeAddr("userThree"); // Generic user
-
-    BondERC20 internal latestProxy;
-
-    /// @notice Deploy a new proxy instance.
-    /// @param shouldBurnBonds Whether or not bonds should be burned when rejected.
-    modifier createProxy(bool shouldBurnBonds) {
-        vm.prank(USER_ONE); // Independent instance deployer
-        latestProxy = BondERC20(
-            proxyFactory.deployNewBondERC20Proxy(
-                address(BENEFICIARY), address(mockToken), BOND_PRICE, shouldBurnBonds, tokenName, tokenSymbol, tokenUri
-            )
-        );
-        vm.label(address(latestProxy), "Bond Proxy Instance");
-        _;
-    }
-
-    /// @dev `to` will usually be address(USER_TWO).
-    /// @notice Prank as USER_TWO, mint Mock token, mint bond.
-    /// @param proxy Bond (proxy) instance.
-    /// @param to Address to purchase for.
-    modifier userTwoMintBond(BondERC20 proxy, address to) {
-        vm.startPrank(USER_TWO);
-        mockToken.mint(BOND_PRICE);
-        mockToken.approve(address(proxy), type(uint256).max);
-        proxy.buyBondFor(to);
-        vm.stopPrank();
-        _;
-    }
-
-    /// @notice Prank the entire test as `USER_TWO`.
-    modifier prankUserTwo() {
-        vm.startPrank(USER_TWO);
-        _;
-        vm.stopPrank();
-    }
-
-    /// @notice Prank the entire test as `USER_ONE` (bond instance owner).
-    modifier prankBondInstanceOwner() {
-        vm.startPrank(USER_ONE);
-        _;
-        vm.stopPrank();
-    }
 
     /*
     ** > Public & External Functions
@@ -326,18 +279,6 @@ contract BondERC20Test is TestBase {
         assertEq(mockToken.balanceOf(address(USER_TWO)), 0 ether);
         assertEq(mockToken.balanceOf(address(USER_THREE)), BOND_PRICE);
         assertEq(mockToken.balanceOf(address(latestProxy)), 0 ether);
-    }
-
-    /// @notice Expect beneficiary to update properly.
-    /// @notice Assert beneficiary has been updated.
-    function testFuzz_changeBeneficiary(address newBeneficiary) public createProxy(false) prankBondInstanceOwner {
-        vm.assume(newBeneficiary != address(0));
-
-        vm.expectEmit();
-        emit BondEvents.BeneficiaryChanged(latestProxy.getBeneficiary(), newBeneficiary);
-        latestProxy.changeBeneficiary(newBeneficiary);
-
-        assertEq(latestProxy.getBeneficiary(), newBeneficiary);
     }
 
     /// @notice Expect Ether rescue to succeed.
