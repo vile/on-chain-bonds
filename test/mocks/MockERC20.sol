@@ -8,6 +8,10 @@ contract MockERC20 is ERC20 {
         _mint(msg.sender, amount);
     }
 
+    function mintTo(uint256 amount, address to) external {
+        _mint(to, amount);
+    }
+
     function name() public view override returns (string memory) {
         return "Mock ERC20 Token";
     }
