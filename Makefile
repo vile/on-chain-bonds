@@ -29,7 +29,7 @@ clean-aderyn :; -rm -rf aderyn-report.md
 
 ### Testing & Coverage
 
-test :; FOUNDRY_PROFILE=lite forge test
+test :; FOUNDRY_PROFILE=lite forge test --show-progress
 test-ext: test coverage-lcov slither aderyn
 test-ext2: test coverage-lcov slitherin aderyn
 
