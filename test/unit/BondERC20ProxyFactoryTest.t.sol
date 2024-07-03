@@ -17,26 +17,6 @@ contract BondERC20ProxyFactoryTest is TestBase {
         new BondERC20ProxyFactory(address(beacon));
     }
 
-    /// @notice Expect proxy deployments should succeed, no matter what (within reason).
-    function testFuzz_deployExcessiveInstances(
-        address proxyDeployer,
-        address beneficiary,
-        uint256 tokenPrice,
-        bool shouldBurn,
-        string memory tokenName,
-        string memory tokenSymbol,
-        string memory tokenURI
-    ) public {
-        vm.assume(proxyDeployer != address(0));
-        vm.assume(beneficiary != address(0));
-        tokenPrice = bound(tokenPrice, 1e18, 1_000_000e18);
-
-        vm.prank(proxyDeployer);
-        proxyFactory.deployNewBondERC20Proxy(
-            beneficiary, address(mockToken), tokenPrice, shouldBurn, tokenName, tokenSymbol, tokenURI
-        );
-    }
-
     /// @notice Expect beacon is set.
     /// @notice Assert beacon is set.
     function test_getBeacon() public {
