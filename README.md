@@ -285,3 +285,4 @@ Refer to repo usage steps.
 3. Individual Bond instances (beacon proxies) are owned, users of each bond instance need to trust the owner.
 4. NFTs are transferrable; the original bond purchaser (minter) and the recipient of an accepted bond's tokens may differ.
 5. When creating proxies, NFT metadata (name, symbol, URI) is not validated or checked that it follows any convention.
+6. It is possible for any user to initialize the implementation contract, however, this does not cause any issues.
