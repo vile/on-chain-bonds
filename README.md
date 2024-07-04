@@ -93,6 +93,7 @@ forge test --mt test_testName -vvvvv
 Deployments on testnets can get a little pricey (ETH-wise), and sometimes faucets don't cut it.
 If that is the case, [LayerZero's TestNet Bridge](https://testnetbridge.com/) allows you to bridge a small amount (usually less than $2) from a handful of L2s to Ethereum L1 Sepolia.
 On average, bridging 0.0001 ETH from ARB or OP to ETH L1 Sepolia, gives ~3.5 sepETH.
+When deploying on L2 testnets, use their respective bridges, such as the [Arbitrum Sepolia bridge](https://bridge.arbitrum.io/?destinationChain=arbitrum-sepolia&sourceChain=sepolia).
 
 #### Deployer Wallet, RPCs, API Key(s)
 
@@ -115,12 +116,23 @@ To do so, simply rename the current `.env.example` using `mv .env.example .env`.
 An easy RPC solution is [Alchemy](https://www.alchemy.com/).
 Either create an account with Alchemy, or sign-in using your GitHub account.
 Then, create a new app on the Alchemy dashboard, and copy your target deployment chain's HTTP RPC URL (for this example, Sepolia).
-Now, put the copied RPC URL after the `=` in `.env` under `SEPOLIA_RPC_URL`.
+Now, put the copied RPC URL after the `=` in `.env` under `ETHEREUM_SEPOLIA_RPC_URL`.
+Follow the same process to deploy on other networks, such as Arbitrum (e.g., under `ARBITRUM_SEPOLIA_RPC_URL`).
 
 Now, to get an Etherscan API key (used to verify the contracts on the block explorer), [create an Etherscan account](https://etherscan.io/register), or if you already have one, use that.
 Then, [create a new API key](https://etherscan.io/myapikey) in your account settings.
 Copy that API key, and put it after the `=` in `.env` under `ETHERSCAN_API_KEY`.
 Etherscan API keys work across **all Ethereum network** explorers (Mainnet, Sepolia, Holesky, etc.).
+Follow the same process to verify on other deployed networks, such as Arbitrum (e.g., under `ARBISCAN_API_KEY`).
+
+#### CREATE2 Salts
+
+All contracts are deployed using the [Keyless CREATE2 Factory](https://etherscan.io/address/0x0000000000ffe8b47b3e2130213b802212439497).
+This means that unique salts were mined for this specific protocol's deployer address ((0x2F51)[https://sepolia.etherscan.io/address/0x2F5106Cc200E804c2233D204FF817d4313604469]).
+As such, deploying from a different wallet requires different salts to be used for efficient 0-leading addresses, if desired.
+
+Salts must be mined sequentially, as previous addresses are required for the beacon and proxy factory constructors.
+A helper forge script (`./script/util/CodeCreationScript.s.sol`), helps manage the `INIT_CODE_HASH` of each contract as two of them take constructor arguments.
 
 #### Running Deploy Script
 
@@ -130,19 +142,53 @@ To run a test (anvil) deployment, use:
 # start Anvil (in a separate terminal)
 anvil
 
-# run the deploy script, targeting the local Anvil chain
+# run the (old, non-CREATE2) deploy script, targeting the local Anvil chain
 make deploy-anvil
 ```
 
-To run a live, testnet deployment, use:
+To run a forked test deployment (against Ethereum Sepolia), use:
 
 ```bash
-make deploy-sepolia KEYSTORE=DEPLOYER_KEYSTORE # change `DEPLOYER_KEYSTORE` to your actual keystore name
+make fork-create2-deploy KEYSTORE=DEPLOYER_KEYSTORE # change `DEPLOYER_KEYSTORE` to your actual keystore name
 ```
 
-Running the live deployment command will deploy all the required contracts, and verify them on Etherscan.
 
-### Live Deployments (Sepolia)
+To run a live, testnet deployment, use:
+
+**Ethereum Sepolia:**
+```bash
+make deploy-eth-sepolia-create2 KEYSTORE=DEPLOYER_KEYSTORE # change `DEPLOYER_KEYSTORE` to your actual keystore name
+```
+
+**Arbitrum Sepolia:**
+```bash
+make deploy-arb-sepolia-create2 KEYSTORE=DEPLOYER_KEYSTORE # change `DEPLOYER_KEYSTORE` to your actual keystore name
+```
+
+Running the live deployment command will deploy all the required contracts, and verify them on their respective Etherscan block explorers.
+
+### Live Deployments
+
+All live deployment across all networks share the same address, and are deployed using the [Keyless CREATE2 Factory](https://etherscan.io/address/0x0000000000FFe8B47B3e2130213B802212439497).
+
+#### Ethereum Sepolia
+
+| Contract                      | Address                                                                                                                       |
+| ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| BondERC20 (Implementation)    | [0x0000000a9900006ee5AEe818870B573e3F00EFdE](https://sepolia.etherscan.io/address/0x0000000a9900006ee5AEe818870B573e3F00EFdE) |
+| NonUpgradeableBondERC20Beacon | [0x00000000002A68e045fcF1b392cD1C53D4A400aA](https://sepolia.etherscan.io/address/0x00000000002A68e045fcF1b392cD1C53D4A400aA) |
+| BondERC20ProxyFactory         | [0x00000000000d2F16966bD08eb4424a60E8C9008e](https://sepolia.etherscan.io/address/0x00000000000d2F16966bD08eb4424a60E8C9008e) |
+
+#### Arbitrum Sepolia
+
+| Contract                      | Address                                                                                                                      |
+| ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| BondERC20 (Implementation)    | [0x0000000a9900006ee5AEe818870B573e3F00EFdE](https://sepolia.arbiscan.io/address/0x0000000a9900006ee5AEe818870B573e3F00EFdE) |
+| NonUpgradeableBondERC20Beacon | [0x00000000002A68e045fcF1b392cD1C53D4A400aA](https://sepolia.arbiscan.io/address/0x00000000002A68e045fcF1b392cD1C53D4A400aA) |
+| BondERC20ProxyFactory         | [0x00000000000d2F16966bD08eb4424a60E8C9008e](https://sepolia.arbiscan.io/address/0x00000000000d2F16966bD08eb4424a60E8C9008e) |
+
+<details>
+<summary>Ethereum Sepolia Deprecated Non-CREATE2</summary>
 
 | Contract                      | Address                                                                                                                       |
 | ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
@@ -150,6 +196,8 @@ Running the live deployment command will deploy all the required contracts, and 
 | NonUpgradeableBondERC20Beacon | [0xc6d794daa00fe35487fef38b28439dce7c431346](https://sepolia.etherscan.io/address/0xc6d794daa00fe35487fef38b28439dce7c431346) |
 | BondERC20ProxyFactory         | [0x24e580ca133cce4040f682298de13d1d7fcbddcd](https://sepolia.etherscan.io/address/0x24e580ca133cce4040f682298de13d1d7fcbddcd) |
 | Example Bond Instance (Proxy) | [0x335e088f203cb1eB08c364218869F3e8172615Ea](https://sepolia.etherscan.io/address/0x335e088f203cb1eB08c364218869F3e8172615Ea) |
+
+</details>
 
 ### Static Analyzers
 
