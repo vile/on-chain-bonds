@@ -14,6 +14,8 @@ interface KeylessCREATE2Factory {
         external
         payable
         returns (address deplymentAddress);
+
+    function hasBeenDeployed(address deploymentAddress) external view returns (bool);
 }
 
 contract DeployWithCREATE2FactoryScript is Script {
@@ -32,15 +34,36 @@ contract DeployWithCREATE2FactoryScript is Script {
     bytes private constant BEACON_CREATION_CODE = type(NonUpgradeableBondERC20Beacon).creationCode;
     bytes private constant FACTORY_CREATION_CODE = type(BondERC20ProxyFactory).creationCode;
 
+    // Known before hand, allows for partial deployments incase of some failure during script execution
+    address private constant IMPL_KNOWN_ADDRESS = 0x0000000a9900006ee5AEe818870B573e3F00EFdE;
+    address private constant BEACON_KNOWN_ADDRESS = 0x00000000002A68e045fcF1b392cD1C53D4A400aA;
+    address private constant FACTORY_KNOWN_ADDRESS = 0x00000000000d2F16966bD08eb4424a60E8C9008e;
+
     function run() external returns (address implAddress, address beaconAddress, address factoryAddress) {
+        KeylessCREATE2Factory c2Factory = KeylessCREATE2Factory(KEYLESS_CREATE2_FACTORY);
+
         vm.startBroadcast();
-        implAddress = KeylessCREATE2Factory(KEYLESS_CREATE2_FACTORY).safeCreate2(IMPL_SALT, IMPL_CREATION_CODE);
-        beaconAddress = KeylessCREATE2Factory(KEYLESS_CREATE2_FACTORY).safeCreate2(
-            BEACON_SALT, abi.encodePacked(BEACON_CREATION_CODE, abi.encode(implAddress))
-        );
-        factoryAddress = KeylessCREATE2Factory(KEYLESS_CREATE2_FACTORY).safeCreate2(
-            FACTORY_SALT, abi.encodePacked(FACTORY_CREATION_CODE, abi.encode(beaconAddress))
-        );
+
+        if (!c2Factory.hasBeenDeployed(IMPL_KNOWN_ADDRESS)) {
+            implAddress = c2Factory.safeCreate2(IMPL_SALT, IMPL_CREATION_CODE);
+        } else {
+            implAddress = IMPL_KNOWN_ADDRESS;
+        }
+
+        if (!c2Factory.hasBeenDeployed(BEACON_KNOWN_ADDRESS)) {
+            beaconAddress =
+                c2Factory.safeCreate2(BEACON_SALT, abi.encodePacked(BEACON_CREATION_CODE, abi.encode(implAddress)));
+        } else {
+            beaconAddress = BEACON_KNOWN_ADDRESS;
+        }
+
+        if (!c2Factory.hasBeenDeployed(FACTORY_KNOWN_ADDRESS)) {
+            factoryAddress =
+                c2Factory.safeCreate2(FACTORY_SALT, abi.encodePacked(FACTORY_CREATION_CODE, abi.encode(beaconAddress)));
+        } else {
+            factoryAddress = FACTORY_KNOWN_ADDRESS;
+        }
+
         vm.stopBroadcast();
     }
 }
