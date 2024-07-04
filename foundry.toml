@@ -32,9 +32,11 @@ runs = 1_000
 [rpc_endpoints]
 sepolia = "${ETHEREUM_SEPOLIA_RPC_URL}"
 arbitrum-sepolia = "${ARBITRUM_SEPOLIA_RPC_URL}"
+optimism-sepolia = "${OPTIMISM_SEPOLIA_RPC_URL}"
 
 [etherscan]
 sepolia = { key = "${ETHERSCAN_API_KEY}", chain = 1, url = "https://api-sepolia.etherscan.io/api" }
 arbitrum-sepolia = { key = "${ARBISCAN_API_KEY}", chain = 421614, url = "https://api-sepolia.arbiscan.io/api" }
+optimism-sepolia = { key = "${OP_ETHERSCAN_API_KEY}", chain = 11155420, url = "https://api-sepolia-optimistic.etherscan.io/api" }
 
 # See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options
