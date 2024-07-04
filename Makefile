@@ -1,6 +1,6 @@
 -include .env
 
-.PHONY: all update install build clean clean-git clean-coverage-report clean-lcov clean-slither clean-aderyn test test-ext test-ext2 coverage coverage-lcov slither aderyn scopefile scope script-deploy-live script-deploy-dry sudo-act deploy-anvil deploy-sepolia
+.PHONY: all update install build build-lite clean clean-git clean-coverage-report clean-lcov clean-slither clean-aderyn test test-ext test-ext2 coverage coverage-lcov slither slitherin aderyn scopefile scope fork-create2-deploy deploy-anvil deploy-eth-sepolia-create2 deploy-arb-sepolia-create2
 
 all: clean install build
 
@@ -51,8 +51,17 @@ scope :; tree ./src/ | sed 's/└/#/g; s/──/--/g; s/├/#/g; s/│ /|/g; s/�
 
 ### Deploy
 
-# Uses default private key #1 on Anvil
+# Fork (test) deployment on Ethereum Sepolia
+fork-create2-deploy :; forge script --chain sepolia script/DeployWithCREATE2FactoryScript.s.sol:DeployWithCREATE2FactoryScript --account $(KEYSTORE) --fork-url $(ETHEREUM_SEPOLIA_RPC_URL) -vvvv
+
+# Uses default private key #1 on Anvil (non-CREATE2)
 deploy-anvil :; forge script script/DeployScript.s.sol:DeployScript --private-key=0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80 --fork-url http://localhost:8545 --broadcast
 
-# Live deployment on Sepolia
-deploy-sepolia :; forge script --chain sepolia script/DeployScript.s.sol:DeployScript --account $(KEYSTORE) --rpc-url $(SEPOLIA_RPC_URL) --broadcast --verify -vvvv
+# Live deployment on Ethereum Sepolia (non-CREATE2)
+# deploy-eth-sepolia :; forge script --chain eth_sepolia script/DeployScript.s.sol:DeployScript --account $(KEYSTORE) --rpc-url $(ETHEREUM_SEPOLIA_RPC_URL) --broadcast --verify -vvvv
+
+# Live deployment on Ethereum Sepolia (CREATE2 Factory)
+deploy-eth-sepolia-create2 :; forge script script/DeployWithCREATE2FactoryScript.s.sol:DeployWithCREATE2FactoryScript --account $(KEYSTORE) --rpc-url $(ETHEREUM_SEPOLIA_RPC_URL) --broadcast --verify -vvvv
+
+# Live deployment on Arbtrium Sepolia (CREATE2 Factory)
+deploy-arb-sepolia-create2 :; forge script script/DeployWithCREATE2FactoryScript.s.sol:DeployWithCREATE2FactoryScript --account $(KEYSTORE) --rpc-url $(ARBITRUM_SEPOLIA_RPC_URL) --broadcast --verify --etherscan-api-key $(ARBISCAN_API_KEY) -vvvv
