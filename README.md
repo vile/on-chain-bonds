@@ -93,7 +93,7 @@ forge test --mt test_testName -vvvvv
 Deployments on testnets can get a little pricey (ETH-wise), and sometimes faucets don't cut it.
 If that is the case, [LayerZero's TestNet Bridge](https://testnetbridge.com/) allows you to bridge a small amount (usually less than $2) from a handful of L2s to Ethereum L1 Sepolia.
 On average, bridging 0.0001 ETH from ARB or OP to ETH L1 Sepolia, gives ~3.5 sepETH.
-When deploying on L2 testnets, use their respective bridges, such as the [Arbitrum Sepolia bridge](https://bridge.arbitrum.io/?destinationChain=arbitrum-sepolia&sourceChain=sepolia).
+When deploying on L2 testnets, use their respective bridges, such as the [Arbitrum Sepolia bridge](https://bridge.arbitrum.io/?destinationChain=arbitrum-sepolia&sourceChain=sepolia) or the [Optimism Sepolia bridge via SuperBridge](https://superbridge.app/op-sepolia).
 
 #### Deployer Wallet, RPCs, API Key(s)
 
@@ -167,6 +167,17 @@ make deploy-arb-sepolia-create2 KEYSTORE=DEPLOYER_KEYSTORE # change `DEPLOYER_KE
 
 Running the live deployment command will deploy all the required contracts, and verify them on their respective Etherscan block explorers.
 
+#### Retrying Failed Etherscan Verifications
+
+For some reason if verifications fail during script execution, and `forge verify-contract` is not working, change your network deploy target in `Makefile` to a fork deploy instead.
+This will have foundry re-try the verification (which is somehow different than `verify-contract`) after the script has finished, like normal.
+
+For example, if you're attempting to re-verify OP Sepolia, your target will look like the following (notice that `rpc-url` is now `fork-url` and the removal of `--broadcast`):
+
+```bash
+deploy-op-sepolia-create2 :; forge script script/DeployWithCREATE2FactoryScript.s.sol:DeployWithCREATE2FactoryScript --account $(KEYSTORE) --fork-url $(OPTIMISM_SEPOLIA_RPC_URL) --verify --etherscan-api-key $(OP_ETHERSCAN_API_KEY) -vvvv
+```
+
 ### Live Deployments
 
 All live deployment across all networks share the same address, and are deployed using the [Keyless CREATE2 Factory](https://etherscan.io/address/0x0000000000FFe8B47B3e2130213B802212439497).
@@ -186,6 +197,14 @@ All live deployment across all networks share the same address, and are deployed
 | BondERC20 (Implementation)    | [0x0000000a9900006ee5AEe818870B573e3F00EFdE](https://sepolia.arbiscan.io/address/0x0000000a9900006ee5AEe818870B573e3F00EFdE) |
 | NonUpgradeableBondERC20Beacon | [0x00000000002A68e045fcF1b392cD1C53D4A400aA](https://sepolia.arbiscan.io/address/0x00000000002A68e045fcF1b392cD1C53D4A400aA) |
 | BondERC20ProxyFactory         | [0x00000000000d2F16966bD08eb4424a60E8C9008e](https://sepolia.arbiscan.io/address/0x00000000000d2F16966bD08eb4424a60E8C9008e) |
+
+#### Optimism Sepolia
+
+| Contract                      | Address                                                                                                                                |
+| ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| BondERC20 (Implementation)    | [0x0000000a9900006ee5AEe818870B573e3F00EFdE](https://sepolia-optimism.etherscan.io/address/0x0000000a9900006ee5AEe818870B573e3F00EFdE) |
+| NonUpgradeableBondERC20Beacon | [0x00000000002A68e045fcF1b392cD1C53D4A400aA](https://sepolia-optimism.etherscan.io/address/0x00000000002A68e045fcF1b392cD1C53D4A400aA) |
+| BondERC20ProxyFactory         | [0x00000000000d2F16966bD08eb4424a60E8C9008e](https://sepolia-optimism.etherscan.io/address/0x00000000000d2F16966bD08eb4424a60E8C9008e) |
 
 <details>
 <summary>Ethereum Sepolia Deprecated Non-CREATE2</summary>
