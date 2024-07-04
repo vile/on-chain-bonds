@@ -41,6 +41,18 @@ The initial protocol deployment consists are three (3) parts:
 Entities who are interested in using the protocol, can deploy a beacon proxy (using the proxy factory), which creates a new "instance" of an independently owned Bond.
 The initial owner is the proxy contract caller, but ownership can be transferred to, say, a multi-sig operated by a decentralized governance structure.
 
+<details>
+<summary>Bond Life Cycle</summary>
+<br/>
+
+<img 
+    src=".assets/images/2-bond-life-cycle.png"
+    alt="Diagram showing the life cycle of a bond NFT"
+/>
+
+</details>
+
+
 Beyond this extra step and external infrastructure, the owner of the Bond instance has the final say in "accepting" or "rejecting" bonds.
 And, therefore, without a decentralized instance owner, all users who mint bonds **must** trust the owner to act in good faith.
 Ownership is required for each Bond instance to function; there is no other way to properly handle accepting or rejecting bonds, as each instance can have arbitrary, socialized rulesets that may/must be evaluated  by human judgment.
