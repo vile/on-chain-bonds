@@ -4,7 +4,7 @@ out = "out"
 libs = ["lib"]
 
 solc_version = "0.8.25"
-# evm_version = "Cancun"
+evm_version = "Paris"
 ignored_error_codes = [
     2018, # view functions can be marked as pure
     2394, # tstore beaks composability
@@ -13,6 +13,7 @@ ignored_error_codes = [
 ]
 
 remappings = ["@solady/=lib/solady/src/"]
+fs_permissions = [{ access = "read", path = "./out" }]
 
 optimizer = true
 optimizer_runs = 10_000_000
@@ -29,9 +30,11 @@ ignored_warnings_from = ["./tests/mocks/MockERC20.sol"]
 runs = 1_000
 
 [rpc_endpoints]
-sepolia = "${SEPOLIA_RPC_URL}"
+sepolia = "${ETHEREUM_SEPOLIA_RPC_URL}"
+arbitrum-sepolia = "${ARBITRUM_SEPOLIA_RPC_URL}"
 
 [etherscan]
-sepolia = { key = "${ETHERSCAN_API_KEY}", url = "https://api-sepolia.etherscan.io/api" }
+sepolia = { key = "${ETHERSCAN_API_KEY}", chain = 1, url = "https://api-sepolia.etherscan.io/api" }
+arbitrum-sepolia = { key = "${ARBISCAN_API_KEY}", chain = 421614, url = "https://api-sepolia.arbiscan.io/api" }
 
 # See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options
