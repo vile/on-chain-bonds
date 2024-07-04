@@ -140,7 +140,7 @@ Follow the same process to verify on other deployed networks, such as Arbitrum (
 #### CREATE2 Salts
 
 All contracts are deployed using the [Keyless CREATE2 Factory](https://etherscan.io/address/0x0000000000ffe8b47b3e2130213b802212439497).
-This means that unique salts were mined for this specific protocol's deployer address ((0x2F51)[https://sepolia.etherscan.io/address/0x2F5106Cc200E804c2233D204FF817d4313604469]).
+This means that unique salts were mined for this specific protocol's deployer address ([0x2F51](https://sepolia.etherscan.io/address/0x2F5106Cc200E804c2233D204FF817d4313604469)).
 As such, deploying from a different wallet requires different salts to be used for efficient 0-leading addresses, if desired.
 
 Salts must be mined sequentially, as previous addresses are required for the beacon and proxy factory constructors.
