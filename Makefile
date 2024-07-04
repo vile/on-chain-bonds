@@ -1,6 +1,6 @@
 -include .env
 
-.PHONY: all update install build build-lite clean clean-git clean-coverage-report clean-lcov clean-slither clean-aderyn test test-ext test-ext2 coverage coverage-lcov slither slitherin aderyn scopefile scope fork-create2-deploy deploy-anvil deploy-eth-sepolia-create2 deploy-arb-sepolia-create2
+.PHONY: all update install build build-lite clean clean-git clean-coverage-report clean-lcov clean-slither clean-aderyn test test-ext test-ext2 coverage coverage-lcov slither slitherin aderyn scopefile scope fork-create2-deploy deploy-anvil deploy-eth-sepolia-create2 deploy-arb-sepolia-create2 deploy-op-sepolia-create2
 
 all: clean install build
 
@@ -65,3 +65,6 @@ deploy-eth-sepolia-create2 :; forge script script/DeployWithCREATE2FactoryScript
 
 # Live deployment on Arbtrium Sepolia (CREATE2 Factory)
 deploy-arb-sepolia-create2 :; forge script script/DeployWithCREATE2FactoryScript.s.sol:DeployWithCREATE2FactoryScript --account $(KEYSTORE) --rpc-url $(ARBITRUM_SEPOLIA_RPC_URL) --broadcast --verify --etherscan-api-key $(ARBISCAN_API_KEY) -vvvv
+
+# Live deployment on Optimism Sepolia (CREATE2 Factory)
+deploy-op-sepolia-create2 :; forge script script/DeployWithCREATE2FactoryScript.s.sol:DeployWithCREATE2FactoryScript --account $(KEYSTORE) --rpc-url $(OPTIMISM_SEPOLIA_RPC_URL) --broadcast --verify --etherscan-api-key $(OP_ETHERSCAN_API_KEY) -vvvv
