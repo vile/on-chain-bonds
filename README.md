@@ -165,6 +165,11 @@ make deploy-eth-sepolia-create2 KEYSTORE=DEPLOYER_KEYSTORE # change `DEPLOYER_KE
 make deploy-arb-sepolia-create2 KEYSTORE=DEPLOYER_KEYSTORE # change `DEPLOYER_KEYSTORE` to your actual keystore name
 ```
 
+**Optimism Sepolia**
+```bash
+make deploy-op-sepolia-create2 KEYSTORE=DEPLOYER_KEYSTORE # change `DEPLOYER_KEYSTORE` to your actual keystore name
+```
+
 Running the live deployment command will deploy all the required contracts, and verify them on their respective Etherscan block explorers.
 
 #### Retrying Failed Etherscan Verifications
