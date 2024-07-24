@@ -5,9 +5,9 @@ import {Bond} from "./abstracts/Bond.sol";
 import {BondEvents} from "./libraries/BondEvents.sol";
 import {BondErrors} from "./libraries/BondErrors.sol";
 
-import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
-import {ReentrancyGuard} from "@solady/utils/ReentrancyGuard.sol";
+import {IERC20} from "@openzeppelin-contracts-5.0.2/token/ERC20/IERC20.sol";
+import {SafeERC20} from "@openzeppelin-contracts-5.0.2/token/ERC20/utils/SafeERC20.sol";
+import {ReentrancyGuard} from "@solady-0.0.227/utils/ReentrancyGuard.sol";
 
 /// @title BondERC20
 /// @author Vile (https://github.com/vile)

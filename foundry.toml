@@ -1,7 +1,7 @@
 [profile.default]
 src = "src"
 out = "out"
-libs = ["lib"]
+libs = ["dependencies"]
 
 solc_version = "0.8.25"
 evm_version = "Paris"
@@ -12,7 +12,11 @@ ignored_error_codes = [
     5574, # contract size limit exceeded (for tests)
 ]
 
-remappings = ["@solady/=lib/solady/src/"]
+remappings = [
+    "@forge-std-1.9.1=dependencies/forge-std-1.9.1/src",
+    "@solady-0.0.227=dependencies/solady-0.0.227/src",
+    "@openzeppelin-contracts-5.0.2=dependencies/@openzeppelin-contracts-5.0.2",
+]
 fs_permissions = [{ access = "read", path = "./out" }]
 
 optimizer = true
@@ -40,3 +44,8 @@ arbitrum-sepolia = { key = "${ARBISCAN_API_KEY}", chain = 421614, url = "https:/
 optimism-sepolia = { key = "${OP_ETHERSCAN_API_KEY}", chain = 11155420, url = "https://api-sepolia-optimistic.etherscan.io/api" }
 
 # See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options
+
+[dependencies]
+forge-std = "1.9.1"
+solady = "0.0.227"
+"@openzeppelin-contracts" = "5.0.2"

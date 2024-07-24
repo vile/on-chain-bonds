@@ -5,9 +5,9 @@ import {IBond} from "../interfaces/IBond.sol";
 import {BondEvents} from "../libraries/BondEvents.sol";
 import {BondErrors} from "../libraries/BondErrors.sol";
 
-import {Initializable} from "@openzeppelin/contracts/proxy/utils/Initializable.sol";
-import {Ownable} from "@solady/auth/Ownable.sol";
-import {ERC721} from "@solady/tokens/ERC721.sol";
+import {Initializable} from "@openzeppelin-contracts-5.0.2/proxy/utils/Initializable.sol";
+import {Ownable} from "@solady-0.0.227/auth/Ownable.sol";
+import {ERC721} from "@solady-0.0.227/tokens/ERC721.sol";
 
 /// @title Bond
 /// @author Vile (https://github.com/vile)
