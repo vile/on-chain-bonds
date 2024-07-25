@@ -7,12 +7,13 @@ import {BondErrors} from "../libraries/BondErrors.sol";
 
 import {Initializable} from "@openzeppelin-contracts-5.0.2/proxy/utils/Initializable.sol";
 import {Ownable} from "@solady-0.0.227/auth/Ownable.sol";
+import {Multicallable} from "@solady-0.0.227/utils/Multicallable.sol";
 import {ERC721} from "@solady-0.0.227/tokens/ERC721.sol";
 
 /// @title Bond
 /// @author Vile (https://github.com/vile)
 /// @notice Abstract base contract for core bond functionality. ERC20 and (future) ETH versions of Bond contracts are derived from this contract.
-abstract contract Bond is IBond, Ownable, ERC721, Initializable {
+abstract contract Bond is IBond, Ownable, Multicallable, Initializable, ERC721 {
     uint16 internal constant PROVIDED_GAS_FOR_CALL = 2_300;
 
     address internal s_bondToken;
@@ -55,28 +56,8 @@ abstract contract Bond is IBond, Ownable, ERC721, Initializable {
     }
 
     /// @inheritdoc IBond
-    function acceptBondBatch(uint256[] calldata bondIds) external payable onlyOwner {
-        uint256 bondIdsLength = bondIds.length;
-        for (uint256 i; i < bondIdsLength;) {
-            address to = ownerOf(bondIds[i]);
-            _acceptBond(to, bondIds[i]);
-            unchecked { i = i + 1; }// forgefmt: disable-line
-        }
-    }
-
-    /// @inheritdoc IBond
     function rejectBond(uint256 bondId) external payable onlyOwner {
         _rejectBond(bondId);
-    }
-
-    /// @inheritdoc IBond
-    function rejectBondBatch(uint256[] calldata bondIds) external payable onlyOwner {
-        uint256 bondIdsLength = bondIds.length;
-
-        for (uint256 i; i < bondIdsLength;) {
-            _rejectBond(bondIds[i]);
-            unchecked { i = i + 1; }// forgefmt: disable-line
-        }
     }
 
     /// @inheritdoc IBond
