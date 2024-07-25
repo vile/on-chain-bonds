@@ -8,6 +8,7 @@ import {BondErrors} from "../libraries/BondErrors.sol";
 import {Initializable} from "@openzeppelin-contracts-5.0.2/proxy/utils/Initializable.sol";
 import {Ownable} from "@solady-0.0.227/auth/Ownable.sol";
 import {Multicallable} from "@solady-0.0.227/utils/Multicallable.sol";
+import {SafeTransferLib} from "@solady-0.0.227/utils/SafeTransferLib.sol";
 import {ERC721} from "@solady-0.0.227/tokens/ERC721.sol";
 
 /// @title Bond
@@ -77,12 +78,10 @@ abstract contract Bond is IBond, Ownable, Multicallable, Initializable, ERC721 {
 
     /// @inheritdoc IBond
     function rescueEther() external payable onlyOwner {
-        uint256 balance = address(this).balance;
-        // slither-disable-next-line low-level-calls
-        (bool succ,) = msg.sender.call{value: balance, gas: PROVIDED_GAS_FOR_CALL}("");
-        if (!succ) revert BondErrors.Bond__TransferFailed(msg.sender);
+        uint256 amount = address(this).balance;
+        SafeTransferLib.safeTransferAllETH(owner());
 
-        emit BondEvents.EtherRescued(balance);
+        emit BondEvents.EtherRescued(amount);
     }
 
     // slither-disable-start dead-code
