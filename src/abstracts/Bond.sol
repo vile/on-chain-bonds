@@ -27,6 +27,10 @@ abstract contract Bond is IBond, Ownable, Multicallable, Initializable, ERC721 {
     string internal s_erc721URI;
     uint256 internal s_tokenId;
 
+    constructor() {
+        _disableInitializers();
+    }
+
     /// @inheritdoc IBond
     /// @dev [virtual]
     function initialize(
