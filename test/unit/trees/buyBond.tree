@@ -1,0 +1,14 @@
+BuyBondTest
+├── when the caller has a sufficient approval and token balance
+│   ├── it should successfully purchase the bond
+│   ├── it should emit BondEvents.BondBought with proper parameters
+│   ├── given the receiver is a contract with onERC721Received
+│   │   └── it should successfully purchase the bond
+│   └── given the receiver is a contract without onERC721Received
+│       └── it should revert
+├── when the caller has an insufficient approval
+│   └── it should revert
+├── when the caller has an insufficient token balance
+│   └── it should revert
+└── when the caller tries to reenter _buyBond
+    └── it should revert

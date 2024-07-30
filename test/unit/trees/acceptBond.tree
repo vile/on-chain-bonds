@@ -1,0 +1,10 @@
+AcceptBondTest
+├── when the caller is not the owner
+│   └── it should revert with Unauthorized
+└── when the caller is the owner
+    ├── given the token id does not exist
+    │   └── it should revert with TokenDoesNotExist
+    └── given the token id does exist
+        ├── it should burn the nft
+        ├── it should transfer the underlying tokens to `to`
+        └── it should emit BondEvents.BondAccepted(bondOwner, to, bondId)
