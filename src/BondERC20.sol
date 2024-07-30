@@ -18,6 +18,8 @@ import {ReentrancyGuard} from "@solady-0.0.227/utils/ReentrancyGuard.sol";
 contract BondERC20 is Bond, ReentrancyGuard {
     using SafeERC20 for IERC20;
 
+    address private constant BURN_ADDRESS = address(0xdead);
+
     /// @inheritdoc Bond
     function initialize(
         address _owner,
@@ -88,9 +90,10 @@ contract BondERC20 is Bond, ReentrancyGuard {
         _burn(bondId);
 
         // Determine where underlying asset is sent (either beneficiary or burned).
-        // `recipient` defaults to address(0), but we explicitly set for clarity.
+        // We use a "custom" burn address (instead of `address(0)`) as not all tokens
+        // have a burn function or allow for transfers to the zero address.
         address recipient;
-        s_shouldBurnBonds ? recipient = address(0) : recipient = s_beneficiary;
+        s_shouldBurnBonds ? recipient = BURN_ADDRESS : recipient = s_beneficiary;
 
         // Transfer underlying asset.
         IERC20(s_bondToken).safeTransfer(recipient, s_bondPrice);
