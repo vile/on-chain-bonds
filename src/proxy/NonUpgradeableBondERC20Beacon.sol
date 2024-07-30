@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.25;
 
-import {IBeacon} from "@openzeppelin/contracts/proxy/beacon/IBeacon.sol";
+import {IBeacon} from "@openzeppelin-contracts-5.0.2/proxy/beacon/IBeacon.sol";
 
 /// @title NonUpgradeableBondERC20Beacon
 /// @author Vile (https://github.com/vile)

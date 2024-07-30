@@ -42,20 +42,9 @@ interface IBond {
     function acceptBond(uint256 bondId) external payable;
 
     /// @dev [onlyOwner]
-    /// @dev Use `rescueBond` to send underlying assets to an alternative address (no batch version is available).
-    /// @notice Accept multiple bonds; burn `bondIds[i]` and send `ownerOf(bondIds[i])` the underlying assets.
-    /// @param bondIds An array of token ids of the bonds being accepted.
-    function acceptBondBatch(uint256[] calldata bondIds) external payable;
-
-    /// @dev [onlyOwner]
     /// @notice Reject a bond; burn `bondId` and either burn the underlying tokens, or send them to `beneficiary`.
     /// @param bondId The token id of the bond being rejected.
     function rejectBond(uint256 bondId) external payable;
-
-    /// @dev [onlyOwner]
-    /// @notice Reject multiple bonds; burn `bondIds[i]` and either burn the underlying tokens, or send them to `beneficiary`.
-    /// @param bondIds An array of token ids of the bonds being rejected.
-    function rejectBondBatch(uint256[] calldata bondIds) external payable;
 
     /// @dev [onlyOwner]
     /// @dev No "batch" version of this function is available as it shouldn't be commonly used.

@@ -4,17 +4,15 @@
 [![Foundry - Latest](https://img.shields.io/static/v1?label=Foundry&message=latest&color=black&logo=solidity&logoColor=white)](https://book.getfoundry.sh/)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-%23FE5196?logo=conventionalcommits&logoColor=white)](https://conventionalcommits.org)
 
-A (kind-of) decentralized and (relatively) gas-efficient protocol for deploying and managing general purpose on-chain bonds, represented as ERC721 (NFT) tokens. 
+A (kind-of) decentralized and (relatively) gas-efficient protocol for deploying and managing general purpose on-chain bonds, represented as ERC721 (NFT) tokens.
 
 This is a sister project of [vile/eth-bonds](https://github.com/vile/eth-bonds), inspired by the same issue.
 
-<center>
-<img 
+<img
     src=".assets/images/0-chain-links-logo.png"
     alt="AI generated image of a chain"
     style="border-radius: 30%;"
 />
-</center>
 
 ## Protocol Architecture
 
@@ -31,7 +29,7 @@ The initial protocol deployment consists are three (3) parts:
 <summary>General Architecture Diagram</summary>
 <br/>
 
-<img 
+<img
     src=".assets/images/1-general-architecture.png"
     alt="Diagram showing the general architecture of the protocol"
 />
@@ -45,13 +43,12 @@ The initial owner is the proxy contract caller, but ownership can be transferred
 <summary>Bond Life Cycle</summary>
 <br/>
 
-<img 
+<img
     src=".assets/images/2-bond-life-cycle.png"
     alt="Diagram showing the life cycle of a bond NFT"
 />
 
 </details>
-
 
 Beyond this extra step and external infrastructure, the owner of the Bond instance has the final say in "accepting" or "rejecting" bonds.
 And, therefore, without a decentralized instance owner, all users who mint bonds **must** trust the owner to act in good faith.
@@ -65,6 +62,9 @@ Ownership is required for each Bond instance to function; there is no other way 
    1. Check if you have Git installed with `git --version`
 2. Foundry - [Install Foundry](https://getfoundry.sh/)
    1. Check if you have Foundry installed with `forge --version`
+3. Soldeer - [Install Soldeer](https://github.com/mario-eth/soldeer/blob/main/README.md#how-to-install-it)
+   1. Check if you have Soldeer installed with `soldeer -V`
+
 ### Installation
 
 ```bash
@@ -76,7 +76,6 @@ make # clean, install deps, build
 ## Usage
 
 See the [Static Analyzers](#static-analyzers) for external tool installation.
-
 
 ### Testing
 
@@ -164,20 +163,22 @@ To run a forked test deployment (against Ethereum Sepolia), use:
 make fork-create2-deploy KEYSTORE=DEPLOYER_KEYSTORE # change `DEPLOYER_KEYSTORE` to your actual keystore name
 ```
 
-
 To run a live, testnet deployment, use:
 
 **Ethereum Sepolia:**
+
 ```bash
 make deploy-eth-sepolia-create2 KEYSTORE=DEPLOYER_KEYSTORE # change `DEPLOYER_KEYSTORE` to your actual keystore name
 ```
 
 **Arbitrum Sepolia:**
+
 ```bash
 make deploy-arb-sepolia-create2 KEYSTORE=DEPLOYER_KEYSTORE # change `DEPLOYER_KEYSTORE` to your actual keystore name
 ```
 
-**Optimism Sepolia**
+**Optimism Sepolia:**
+
 ```bash
 make deploy-op-sepolia-create2 KEYSTORE=DEPLOYER_KEYSTORE # change `DEPLOYER_KEYSTORE` to your actual keystore name
 ```
@@ -285,4 +286,3 @@ Refer to repo usage steps.
 3. Individual Bond instances (beacon proxies) are owned, users of each bond instance need to trust the owner.
 4. NFTs are transferrable; the original bond purchaser (minter) and the recipient of an accepted bond's tokens may differ.
 5. When creating proxies, NFT metadata (name, symbol, URI) is not validated or checked that it follows any convention.
-6. It is possible for any user to initialize the implementation contract, however, this does not cause any issues.

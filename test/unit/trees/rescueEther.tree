@@ -1,0 +1,6 @@
+RescueEtherTest
+├── when the caller can receive ether
+│   ├── it should transfer the entire ether balanace
+│   └── it should emit BondEvents.EtherRescued(amount)
+└── when the caller can not receive ether
+    └── it should revert

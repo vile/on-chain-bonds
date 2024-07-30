@@ -1,0 +1,3 @@
+RenounceOnwershipTest
+└── when attempting to renounce
+    └── it should result in no state change

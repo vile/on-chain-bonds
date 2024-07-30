@@ -2,7 +2,7 @@
 pragma solidity 0.8.25;
 
 // Forge
-import {Script} from "forge-std/Script.sol";
+import {Script} from "@forge-std-1.9.1/Script.sol";
 
 contract CreationCodeScript is Script {
     // If you are mining your own, change these addresses as needed

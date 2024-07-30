@@ -1,0 +1,15 @@
+RejectBondTest
+├── when the caller is not the owner
+│   └── it should revert with Unauthorized
+└── when the caller is the owner
+    ├── given the token id does not exist
+    │   └── it should revert with TokenDoesNotExist
+    └── given the token id does exist
+        ├── when underlying assets should be burned
+        │   ├── it should burn the nft
+        │   ├── it should transfer underlying tokens to the zero address
+        │   └── it should emit BondEvents.BondRejected(bondOwner, bondId, s_shouldBurnBonds)
+        └── when underlying assets should not be burned
+            ├── it should burn the nft
+            ├── it should transfer underlying tokens to the beneficiary address
+            └── it should emit BondEvents.BondRejected(bondOwner, bondId, s_shouldBurnBonds)

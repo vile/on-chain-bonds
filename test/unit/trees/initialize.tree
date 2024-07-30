@@ -1,0 +1,17 @@
+InitializeTest
+├── when the base implementation initializer is called
+│   └── it should revert
+└── when initializing the proxy
+    ├── given the owner address is zero
+    │   └── it should revert with BondErrors.Bond__ZeroAddress
+    ├── given the beneficiary address is zero
+    │   └── it should revert with BondErrors.Bond__ZeroAddress
+    ├── given the bond token address is zero
+    │   └── it should revert with BondErrors.Bond__ZeroAddress
+    ├── given the bond price is zero
+    │   └── it should revert with BondErrors.Bond__PriceCannotBeZero
+    ├── it should set all state variables
+    ├── it should set the owner
+    ├── it should emit BondEvents.BondCreated with proper parameters
+    └── when a caller tries to reinitialize
+        └── it should revert with InvalidInitialization

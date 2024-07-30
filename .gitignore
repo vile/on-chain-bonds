@@ -19,3 +19,5 @@ lcov.info
 aderyn-report.md
 analyzer-report.md
 slither.txt
+
+dependencies/

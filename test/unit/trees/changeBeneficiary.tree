@@ -1,0 +1,9 @@
+ChangeBeneficiaryTest
+├── when the caller is not the owner
+│   └── it should revert
+└── when the caller is the owner
+    ├── given the newBeneficiary is the zero address
+    │   └── it should revert with BondErrors.Bond__ZeroAddress
+    └── given the newBeneficiary is not the zero address
+        ├── it should update s_beneficiary
+        └── it should emit BondEvents.BeneficiaryChanged(oldBeneficiary, newBeneficiary)

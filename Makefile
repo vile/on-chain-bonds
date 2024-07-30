@@ -1,6 +1,6 @@
 -include .env
 
-.PHONY: all update install build build-lite clean clean-git clean-coverage-report clean-lcov clean-slither clean-aderyn test test-ext test-ext2 coverage coverage-lcov slither slitherin aderyn scopefile scope fork-create2-deploy deploy-anvil deploy-eth-sepolia-create2 deploy-arb-sepolia-create2 deploy-op-sepolia-create2
+.PHONY: all update install build build-lite clean clean-git clean-coverage-report clean-lcov clean-slither clean-aderyn test test-ext test-ext2 coverage coverage-lcov slither slitherin aderyn bulloak scopefile scope fork-create2-deploy deploy-anvil deploy-eth-sepolia-create2 deploy-arb-sepolia-create2 deploy-op-sepolia-create2
 
 all: clean install build
 
@@ -8,7 +8,8 @@ all: clean install build
 
 update :; forge update
 
-install :; foundryup && forge install foundry-rs/forge-std --no-commit && forge install vectorized/solady --no-commit && forge install OpenZeppelin/openzeppelin-contracts --no-commit
+# install :; foundryup && forge install foundry-rs/forge-std --no-commit && forge install vectorized/solady --no-commit && forge install OpenZeppelin/openzeppelin-contracts --no-commit
+install :; foundryup && soldeer update
 
 build :; FOUNDRY_PROFILE=default forge build
 build-lite :; FOUNDRY_PROFILE=lite forge build
@@ -42,6 +43,8 @@ slither :; -slither . --config-file slither.config.json --exclude-dependencies >
 slitherin :; -slitherin . --config-file slither.config.json --exclude-dependencies > slither.txt 2>&1
 
 aderyn :; aderyn . && mv report.md aderyn-report.md
+
+bulloak :; bulloak scaffold test/unit/trees/$(TREE).tree
 
 ### Scope
 
